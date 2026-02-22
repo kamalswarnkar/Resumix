@@ -36,6 +36,16 @@
 {% block page_js %}
 <script>
   (function () {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("fresh") === "1") {
+      localStorage.removeItem("resumix_access");
+      localStorage.removeItem("resumix_refresh");
+      localStorage.removeItem("resumix_user");
+      localStorage.removeItem("resumix_resume_id");
+      localStorage.removeItem("resumix_uploaded_ready");
+      localStorage.removeItem("resumix_analysis_completed");
+    }
+
     const token = localStorage.getItem("resumix_access");
     if (token) {
       window.location.replace("/dashboard/");
@@ -43,7 +53,6 @@
     }
 
     const msgEl = document.getElementById("loginMsg");
-    const params = new URLSearchParams(window.location.search);
     if (params.get("registered") === "1") {
       msgEl.textContent = "Registration complete. Please login.";
       msgEl.className = "msg ok";

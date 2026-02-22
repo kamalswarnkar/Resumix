@@ -130,6 +130,7 @@
         setMetrics(data);
         localStorage.setItem("resumix_analysis_completed", "1");
       } catch (error) {
+        window.alert(error && error.message ? error.message : "Analysis failed. Please check AI configuration and try again.");
       }
     });
 
