@@ -3,19 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Resumix | AI Resume Analyzer</title>
+  <title>Resumix | Resume Analyzer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Syne:wght@500;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --ink: #18252b;
-      --paper: #f6f4ee;
-      --pebble: #d4d1c7;
-      --accent: #0f7f66;
-      --accent-strong: #0b614e;
-      --signal: #e4572e;
-      --card: rgba(255, 255, 255, 0.8);
+      --bg-1: #faf4e4;
+      --bg-2: #e5f4ee;
+      --ink: #122027;
+      --muted: #4f6167;
+      --card: rgba(255, 255, 255, 0.78);
+      --line: rgba(18, 32, 39, 0.15);
+      --brand: #0a8d70;
+      --brand-strong: #076d57;
+      --accent: #d94f1b;
+      --good: #176d33;
+      --bad: #8d1f1f;
+      --shadow: 0 16px 32px rgba(18, 32, 39, 0.11);
+      --radius: 18px;
     }
 
     * {
@@ -24,280 +30,332 @@
 
     body {
       margin: 0;
-      font-family: "Sora", sans-serif;
+      font-family: "Outfit", sans-serif;
       color: var(--ink);
       background:
-        radial-gradient(circle at 10% 20%, rgba(228, 87, 46, 0.12), transparent 35%),
-        radial-gradient(circle at 85% 10%, rgba(15, 127, 102, 0.2), transparent 40%),
-        linear-gradient(145deg, #f4efe2 0%, #ebf3ef 100%);
+        radial-gradient(circle at 15% 10%, rgba(217, 79, 27, 0.14), transparent 34%),
+        radial-gradient(circle at 84% 8%, rgba(10, 141, 112, 0.20), transparent 40%),
+        linear-gradient(140deg, var(--bg-1), var(--bg-2));
       min-height: 100vh;
     }
 
-    .shell {
-      max-width: 1120px;
+    .layout {
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 24px 18px 42px;
-      animation: fadeIn 500ms ease-out;
+      padding: 20px 16px 36px;
+      animation: reveal 450ms ease-out;
     }
 
-    .topbar {
+    .header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       gap: 12px;
-      margin-bottom: 28px;
+      align-items: center;
+      margin-bottom: 16px;
     }
 
     .brand {
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 1.4rem;
-      font-weight: 700;
-      letter-spacing: 0.03em;
+      font-family: "Syne", sans-serif;
+      font-size: clamp(1.3rem, 3vw, 2rem);
+      font-weight: 800;
+      letter-spacing: 0.02em;
     }
 
     .brand span {
-      color: var(--accent);
+      color: var(--brand);
     }
 
-    .nav {
+    .top-links {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
     }
 
-    .chip {
+    .pill {
+      display: inline-block;
       text-decoration: none;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.72);
       color: var(--ink);
-      border: 1px solid rgba(24, 37, 43, 0.2);
-      padding: 8px 14px;
       border-radius: 999px;
-      font-size: 0.85rem;
-      transition: all 180ms ease;
-      background: rgba(255, 255, 255, 0.6);
+      padding: 7px 12px;
+      font-size: 0.82rem;
+      transition: 160ms ease;
     }
 
-    .chip:hover {
+    .pill:hover {
+      border-color: var(--brand);
+      color: var(--brand);
       transform: translateY(-1px);
-      border-color: var(--accent);
-      color: var(--accent);
     }
 
     .hero {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 24px;
-      margin-bottom: 24px;
-    }
-
-    .hero-card,
-    .panel,
-    .stat,
-    .timeline-item {
       background: var(--card);
-      backdrop-filter: blur(4px);
-      border: 1px solid rgba(255, 255, 255, 0.85);
-      border-radius: 20px;
-      box-shadow: 0 14px 28px rgba(24, 37, 43, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: clamp(18px, 2.8vw, 30px);
+      margin-bottom: 18px;
+      position: relative;
+      overflow: hidden;
     }
 
-    .hero-card {
-      padding: 30px;
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: rgba(10, 141, 112, 0.11);
+      right: -50px;
+      top: -70px;
+      pointer-events: none;
     }
 
     h1 {
-      margin: 0 0 12px;
-      font-family: "Space Grotesk", sans-serif;
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
-      line-height: 1.1;
+      font-family: "Syne", sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.9rem);
+      margin: 0 0 8px;
+      line-height: 1.07;
     }
 
-    .sub {
-      margin: 0 0 20px;
-      color: #2c3b41;
-      line-height: 1.65;
-      font-size: 0.96rem;
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      max-width: 770px;
+      line-height: 1.55;
     }
 
-    .hero-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
+    .status {
+      margin-top: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(10, 141, 112, 0.24);
+      background: rgba(10, 141, 112, 0.1);
+      padding: 8px 12px;
+      font-size: 0.9rem;
     }
 
-    .btn {
-      border: none;
-      cursor: pointer;
-      border-radius: 12px;
-      padding: 11px 16px;
-      font-weight: 600;
-      font-family: inherit;
-      transition: transform 160ms ease, opacity 160ms ease;
-    }
-
-    .btn:hover {
-      transform: translateY(-1px);
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: white;
-    }
-
-    .btn-primary:hover {
-      background: var(--accent-strong);
-    }
-
-    .btn-ghost {
-      border: 1px solid rgba(24, 37, 43, 0.25);
-      background: transparent;
-      color: var(--ink);
-    }
-
-    .hero-metrics {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      align-content: start;
-    }
-
-    .stat {
-      padding: 18px;
-      animation: floatIn 480ms ease both;
-    }
-
-    .stat:nth-child(2) { animation-delay: 60ms; }
-    .stat:nth-child(3) { animation-delay: 120ms; }
-    .stat:nth-child(4) { animation-delay: 180ms; }
-
-    .stat .label {
-      font-size: 0.76rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #536067;
-      margin-bottom: 4px;
-    }
-
-    .stat .value {
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 1.4rem;
+    .status b {
       font-weight: 700;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 12px;
     }
 
     .panel {
-      padding: 22px;
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
     }
 
-    h2 {
-      margin: 0 0 14px;
-      font-size: 1.04rem;
-      font-family: "Space Grotesk", sans-serif;
+    .panel h2 {
+      margin: 0 0 10px;
+      font-family: "Syne", sans-serif;
+      font-size: 1.03rem;
     }
 
-    .timeline {
-      display: grid;
-      gap: 10px;
+    .panel p {
+      color: var(--muted);
+      margin: 0 0 12px;
+      font-size: 0.92rem;
     }
 
-    .timeline-item {
-      padding: 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(15, 127, 102, 0.2);
+    .span-4 { grid-column: span 4; }
+    .span-8 { grid-column: span 8; }
+    .span-12 { grid-column: span 12; }
+
+    .field {
+      margin-bottom: 10px;
     }
 
-    .time {
-      font-size: 0.8rem;
-      color: #5f6d73;
-    }
-
-    .title {
-      margin: 2px 0;
+    label {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.84rem;
+      color: #314146;
       font-weight: 600;
     }
 
-    .meta {
-      font-size: 0.88rem;
-      color: #47545a;
+    input,
+    textarea,
+    select,
+    button {
+      width: 100%;
+      font: inherit;
+      border-radius: 12px;
     }
 
-    .skills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+    input,
+    textarea,
+    select {
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 10px;
+      color: var(--ink);
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .btn {
+      border: none;
+      background: var(--brand);
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 10px 12px;
+      transition: background 130ms ease, transform 130ms ease;
+    }
+
+    .btn:hover {
+      background: var(--brand-strong);
+      transform: translateY(-1px);
+    }
+
+    .btn-accent {
+      background: var(--accent);
+    }
+
+    .btn-accent:hover {
+      background: #b94216;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(18, 32, 39, 0.04);
+    }
+
+    .note {
+      font-size: 0.82rem;
+      color: #4e5e64;
       margin-top: 6px;
     }
 
-    .tag {
+    .msg {
+      margin-top: 8px;
+      font-size: 0.86rem;
+      min-height: 1.2em;
+    }
+
+    .ok { color: var(--good); }
+    .err { color: var(--bad); }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .metric .k {
+      font-size: 0.77rem;
+      color: #5a6a6f;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .metric .v {
+      font-size: 1.1rem;
+      font-weight: 700;
+      font-family: "Syne", sans-serif;
+      margin-top: 3px;
+    }
+
+    .list {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .item {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.74);
+    }
+
+    .item .head {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .chip {
+      border-radius: 999px;
+      border: 1px solid rgba(10, 141, 112, 0.24);
+      background: rgba(10, 141, 112, 0.11);
+      color: var(--brand-strong);
+      padding: 4px 10px;
+      font-size: 0.77rem;
+    }
+
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-size: 0.78rem;
-      padding: 5px 10px;
-      border-radius: 999px;
-      background: rgba(15, 127, 102, 0.13);
-      color: var(--accent-strong);
-      border: 1px solid rgba(15, 127, 102, 0.25);
+      color: #1f2f35;
+      background: rgba(255, 255, 255, 0.68);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px;
+      max-height: 260px;
+      overflow: auto;
     }
 
-    .progress {
-      margin-top: 16px;
-    }
-
-    .meter {
-      width: 100%;
-      height: 10px;
-      border-radius: 999px;
-      overflow: hidden;
-      background: rgba(24, 37, 43, 0.12);
-    }
-
-    .meter span {
-      display: block;
-      height: 100%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--signal), var(--accent));
-      width: 82%;
-    }
-
-    .footer-note {
-      margin-top: 14px;
-      font-size: 0.85rem;
-      color: #4f5d63;
-    }
-
-    @keyframes fadeIn {
+    @keyframes reveal {
       from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes floatIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 900px) {
-      .hero,
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-card {
-        padding: 22px;
-      }
-
-      .hero-metrics {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+    @media (max-width: 980px) {
+      .span-4,
+      .span-8 {
+        grid-column: span 12;
       }
     }
 
     @media (max-width: 560px) {
-      .hero-metrics {
+      .row {
         grid-template-columns: 1fr;
       }
 
-      .topbar {
+      .header {
         flex-direction: column;
         align-items: flex-start;
       }
@@ -305,88 +363,381 @@
   </style>
 </head>
 <body>
-  <div class="shell">
-    <header class="topbar">
-      <div class="brand">Resu<span>mix</span> Template</div>
-      <nav class="nav">
-        <a class="chip" href="/api/docs/">API Docs</a>
-        <a class="chip" href="/admin/">Admin</a>
-        <a class="chip" href="/api/schema/">Schema</a>
+  <main class="layout">
+    <header class="header">
+      <div class="brand">Resu<span>mix</span> Dashboard</div>
+      <nav class="top-links">
+        <a class="pill" href="/api/docs/" target="_blank" rel="noreferrer">API Docs</a>
+        <a class="pill" href="/api/schema/" target="_blank" rel="noreferrer">Schema</a>
+        <a class="pill" href="/admin/" target="_blank" rel="noreferrer">Admin</a>
       </nav>
     </header>
 
     <section class="hero">
-      <article class="hero-card">
-        <h1>AI Resume Intelligence Workspace</h1>
-        <p class="sub">
-          This is a separate custom template for Resumix. Use it as your branded frontend concept page while your React app continues running independently.
-        </p>
-        <div class="hero-actions">
-          <button class="btn btn-primary" type="button">Start New Analysis</button>
-          <button class="btn btn-ghost" type="button">View Previous Reports</button>
-        </div>
-      </article>
-      <aside class="hero-metrics">
-        <div class="stat">
-          <div class="label">Avg Match</div>
-          <div class="value">84.2%</div>
-        </div>
-        <div class="stat">
-          <div class="label">Total Analyses</div>
-          <div class="value">1,204</div>
-        </div>
-        <div class="stat">
-          <div class="label">Top Role</div>
-          <div class="value">Data Analyst</div>
-        </div>
-        <div class="stat">
-          <div class="label">ATS Pass Rate</div>
-          <div class="value">91%</div>
-        </div>
-      </aside>
+      <h1>Template-first Resume Analyzer</h1>
+      <p class="subtitle">This page now replaces the separate frontend app. Authenticate, upload resume, run analysis, review history, and fetch admin stats from this single Django template.</p>
+      <div class="status">Session: <b id="authState">Not logged in</b></div>
     </section>
 
     <section class="grid">
-      <article class="panel">
-        <h2>Recent Candidate Snapshot</h2>
-        <div class="timeline">
-          <div class="timeline-item">
-            <div class="time">Today, 09:24 AM</div>
-            <p class="title">SDE Candidate - Match 88%</p>
-            <div class="meta">Missing: docker, kubernetes</div>
+      <section class="panel span-4">
+        <h2>Register</h2>
+        <form id="registerForm">
+          <div class="field">
+            <label for="regEmail">Email</label>
+            <input id="regEmail" type="email" required />
           </div>
-          <div class="timeline-item">
-            <div class="time">Today, 08:02 AM</div>
-            <p class="title">ML Engineer Candidate - Match 81%</p>
-            <div class="meta">Missing: mlops, airflow</div>
+          <div class="row">
+            <div class="field">
+              <label for="regFirst">First name</label>
+              <input id="regFirst" type="text" />
+            </div>
+            <div class="field">
+              <label for="regLast">Last name</label>
+              <input id="regLast" type="text" />
+            </div>
           </div>
-          <div class="timeline-item">
-            <div class="time">Yesterday</div>
-            <p class="title">Backend Candidate - Match 76%</p>
-            <div class="meta">Missing: redis, pytest</div>
+          <div class="field">
+            <label for="regPassword">Password</label>
+            <input id="regPassword" type="password" minlength="8" required />
           </div>
-        </div>
-      </article>
+          <button class="btn" type="submit">Create Account</button>
+          <div class="msg" id="registerMsg"></div>
+        </form>
+      </section>
 
-      <article class="panel">
-        <h2>Role Fit Highlights</h2>
-        <div class="skills">
-          <span class="tag">python</span>
-          <span class="tag">django</span>
-          <span class="tag">sql</span>
-          <span class="tag">rest api</span>
-          <span class="tag">react</span>
-          <span class="tag">nlp</span>
-        </div>
-        <div class="progress">
-          <div class="meta">Composite relevance score</div>
-          <div class="meter"><span></span></div>
-        </div>
-        <p class="footer-note">
-          Suggestion engine: strengthen project impact statements and align keywords with the target job description.
-        </p>
-      </article>
+      <section class="panel span-4">
+        <h2>Login</h2>
+        <form id="loginForm">
+          <div class="field">
+            <label for="loginEmail">Email</label>
+            <input id="loginEmail" type="email" required />
+          </div>
+          <div class="field">
+            <label for="loginPassword">Password</label>
+            <input id="loginPassword" type="password" required />
+          </div>
+          <button class="btn btn-accent" type="submit">Login</button>
+          <button class="btn btn-ghost" type="button" id="logoutBtn">Logout</button>
+          <div class="msg" id="loginMsg"></div>
+        </form>
+      </section>
+
+      <section class="panel span-4">
+        <h2>Admin Quick Actions</h2>
+        <p>Requires admin role.</p>
+        <button class="btn" type="button" id="statsBtn">Load Stats</button>
+        <button class="btn btn-ghost" type="button" id="usersBtn">Load Users</button>
+        <div class="msg" id="adminMsg"></div>
+        <div class="cards" id="statsCards"></div>
+      </section>
+
+      <section class="panel span-4">
+        <h2>1. Upload Resume</h2>
+        <form id="uploadForm">
+          <div class="field">
+            <label for="resumeFile">Select file (.pdf/.doc/.docx)</label>
+            <input id="resumeFile" type="file" accept=".pdf,.doc,.docx" required />
+          </div>
+          <button class="btn" type="submit">Upload</button>
+          <div class="msg" id="uploadMsg"></div>
+          <div class="note">Current resume id: <b id="resumeIdText">None</b></div>
+        </form>
+      </section>
+
+      <section class="panel span-8">
+        <h2>2. Analyze Resume</h2>
+        <form id="analyzeForm">
+          <div class="field">
+            <label for="resumeId">Resume ID</label>
+            <input id="resumeId" type="number" min="1" required />
+          </div>
+          <div class="field">
+            <label for="jobDescription">Job Description (minimum 30 chars)</label>
+            <textarea id="jobDescription" required></textarea>
+          </div>
+          <button class="btn btn-accent" type="submit">Run Analysis</button>
+          <div class="msg" id="analyzeMsg"></div>
+        </form>
+      </section>
+
+      <section class="panel span-12">
+        <h2>Analysis Result</h2>
+        <div class="cards" id="analysisCards"></div>
+        <div class="list" id="analysisLists"></div>
+      </section>
+
+      <section class="panel span-12">
+        <h2>History</h2>
+        <button class="btn" type="button" id="historyBtn">Load History</button>
+        <div class="msg" id="historyMsg"></div>
+        <div class="list" id="historyList"></div>
+      </section>
+
+      <section class="panel span-12">
+        <h2>Raw API Output</h2>
+        <pre id="rawOutput">No API call yet.</pre>
+      </section>
     </section>
-  </div>
+  </main>
+
+  <script>
+    const state = {
+      access: localStorage.getItem("resumix_access") || "",
+      refresh: localStorage.getItem("resumix_refresh") || "",
+      user: JSON.parse(localStorage.getItem("resumix_user") || "null"),
+    };
+
+    const authStateEl = document.getElementById("authState");
+    const rawOutputEl = document.getElementById("rawOutput");
+
+    const ids = {
+      registerMsg: document.getElementById("registerMsg"),
+      loginMsg: document.getElementById("loginMsg"),
+      uploadMsg: document.getElementById("uploadMsg"),
+      analyzeMsg: document.getElementById("analyzeMsg"),
+      historyMsg: document.getElementById("historyMsg"),
+      adminMsg: document.getElementById("adminMsg"),
+      resumeIdText: document.getElementById("resumeIdText"),
+      resumeIdInput: document.getElementById("resumeId"),
+      statsCards: document.getElementById("statsCards"),
+      historyList: document.getElementById("historyList"),
+      analysisCards: document.getElementById("analysisCards"),
+      analysisLists: document.getElementById("analysisLists"),
+    };
+
+    function setMsg(el, text, ok) {
+      el.textContent = text || "";
+      el.className = "msg " + (ok ? "ok" : "err");
+    }
+
+    function setRaw(data) {
+      rawOutputEl.textContent = typeof data === "string" ? data : JSON.stringify(data, null, 2);
+    }
+
+    function updateAuthUI() {
+      const label = state.user ? `${state.user.email} (${state.user.role || "user"})` : "Not logged in";
+      authStateEl.textContent = label;
+    }
+
+    function saveSession(payload) {
+      state.access = payload.access || "";
+      state.refresh = payload.refresh || "";
+      state.user = payload.user || null;
+
+      localStorage.setItem("resumix_access", state.access);
+      localStorage.setItem("resumix_refresh", state.refresh);
+      localStorage.setItem("resumix_user", JSON.stringify(state.user));
+      updateAuthUI();
+    }
+
+    function clearSession() {
+      state.access = "";
+      state.refresh = "";
+      state.user = null;
+
+      localStorage.removeItem("resumix_access");
+      localStorage.removeItem("resumix_refresh");
+      localStorage.removeItem("resumix_user");
+      updateAuthUI();
+    }
+
+    async function api(path, options = {}) {
+      const headers = { ...(options.headers || {}) };
+      if (state.access) {
+        headers.Authorization = `Bearer ${state.access}`;
+      }
+
+      const response = await fetch(path, { ...options, headers });
+      let data;
+      try {
+        data = await response.json();
+      } catch {
+        data = { detail: response.statusText || "Unexpected response" };
+      }
+
+      if (!response.ok) {
+        const detail = data?.detail || data?.non_field_errors?.[0] || JSON.stringify(data);
+        throw new Error(detail);
+      }
+
+      setRaw(data);
+      return data;
+    }
+
+    function metricCard(key, value) {
+      return `<div class="metric"><div class="k">${key}</div><div class="v">${value}</div></div>`;
+    }
+
+    function chips(values) {
+      if (!values || !values.length) return "<div class='note'>None</div>";
+      return `<div class="chips">${values.map(v => `<span class="chip">${v}</span>`).join("")}</div>`;
+    }
+
+    function renderAnalysis(data) {
+      ids.analysisCards.innerHTML = [
+        metricCard("Match Score", `${data.match_score}%`),
+        metricCard("Predicted Role", data.predicted_role || "N/A"),
+        metricCard("Keyword Similarity", `${data.keyword_similarity}%`),
+        metricCard("Skill Match", `${data.skill_match_score}%`),
+        metricCard("Experience Relevance", `${data.experience_relevance}%`),
+        metricCard("ATS Compliance", `${data.ats_compliance}%`),
+      ].join("");
+
+      ids.analysisLists.innerHTML = `
+        <div class="item"><div class="head">Skills Found</div>${chips(data.skills_found)}</div>
+        <div class="item"><div class="head">Skills Missing</div>${chips(data.skills_missing)}</div>
+        <div class="item"><div class="head">Suggestions</div>${chips(data.suggestions)}</div>
+      `;
+    }
+
+    function renderHistory(items) {
+      if (!items.length) {
+        ids.historyList.innerHTML = "<div class='note'>No analysis history found.</div>";
+        return;
+      }
+
+      ids.historyList.innerHTML = items.map(item => `
+        <article class="item">
+          <div class="head">Resume #${item.resume} - ${item.match_score}% (${item.predicted_role || "N/A"})</div>
+          <div class="note">${new Date(item.created_at).toLocaleString()}</div>
+          <div class="chips">
+            <span class="chip">Keyword: ${item.keyword_similarity}%</span>
+            <span class="chip">Skill: ${item.skill_match_score}%</span>
+            <span class="chip">Experience: ${item.experience_relevance}%</span>
+            <span class="chip">ATS: ${item.ats_compliance}%</span>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      try {
+        const payload = {
+          email: document.getElementById("regEmail").value,
+          first_name: document.getElementById("regFirst").value,
+          last_name: document.getElementById("regLast").value,
+          password: document.getElementById("regPassword").value,
+        };
+        const data = await api("/api/auth/register/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        saveSession(data);
+        setMsg(ids.registerMsg, "Registration successful. Logged in.", true);
+      } catch (err) {
+        setMsg(ids.registerMsg, err.message, false);
+      }
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      try {
+        const payload = {
+          email: document.getElementById("loginEmail").value,
+          password: document.getElementById("loginPassword").value,
+        };
+        const data = await api("/api/auth/login/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        saveSession(data);
+        setMsg(ids.loginMsg, "Login successful.", true);
+      } catch (err) {
+        setMsg(ids.loginMsg, err.message, false);
+      }
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      clearSession();
+      setMsg(ids.loginMsg, "Logged out.", true);
+    });
+
+    document.getElementById("uploadForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      try {
+        const fileInput = document.getElementById("resumeFile");
+        if (!fileInput.files[0]) {
+          throw new Error("Please choose a file.");
+        }
+
+        const formData = new FormData();
+        formData.append("file", fileInput.files[0]);
+
+        const data = await api("/api/resume/upload/", {
+          method: "POST",
+          body: formData,
+        });
+
+        ids.resumeIdText.textContent = data.id;
+        ids.resumeIdInput.value = data.id;
+        setMsg(ids.uploadMsg, "Upload successful.", true);
+      } catch (err) {
+        setMsg(ids.uploadMsg, err.message, false);
+      }
+    });
+
+    document.getElementById("analyzeForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      try {
+        const payload = {
+          resume_id: Number(ids.resumeIdInput.value),
+          job_description: document.getElementById("jobDescription").value,
+        };
+
+        const data = await api("/api/resume/analyze/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        renderAnalysis(data);
+        setMsg(ids.analyzeMsg, "Analysis complete.", true);
+      } catch (err) {
+        setMsg(ids.analyzeMsg, err.message, false);
+      }
+    });
+
+    document.getElementById("historyBtn").addEventListener("click", async () => {
+      try {
+        const data = await api("/api/resume/history/");
+        renderHistory(data);
+        setMsg(ids.historyMsg, "History loaded.", true);
+      } catch (err) {
+        setMsg(ids.historyMsg, err.message, false);
+      }
+    });
+
+    document.getElementById("statsBtn").addEventListener("click", async () => {
+      try {
+        const data = await api("/api/admin/stats/");
+        ids.statsCards.innerHTML = [
+          metricCard("Total Users", data.total_users),
+          metricCard("Total Resumes", data.total_resumes),
+          metricCard("Total Analyses", data.total_analyses),
+          metricCard("Avg Match Score", data.average_match_score),
+        ].join("");
+        setMsg(ids.adminMsg, "Admin stats loaded.", true);
+      } catch (err) {
+        setMsg(ids.adminMsg, err.message, false);
+      }
+    });
+
+    document.getElementById("usersBtn").addEventListener("click", async () => {
+      try {
+        const data = await api("/api/admin/users/");
+        const preview = data.slice(0, 12).map(user => `${user.id}. ${user.email} [${user.role}]`).join("\n");
+        setRaw(preview || "No users found");
+        setMsg(ids.adminMsg, `Loaded ${data.length} users (preview in Raw API Output).`, true);
+      } catch (err) {
+        setMsg(ids.adminMsg, err.message, false);
+      }
+    });
+
+    updateAuthUI();
+  </script>
 </body>
 </html>
