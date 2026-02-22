@@ -94,6 +94,18 @@
       border-color: rgba(11, 139, 114, 0.45);
     }
 
+    .nav .logout-btn {
+      border-color: rgba(170, 34, 34, 0.45);
+      color: #8f1d1d;
+      background: rgba(214, 91, 91, 0.14);
+    }
+
+    .nav .logout-btn:hover {
+      border-color: rgba(170, 34, 34, 0.72);
+      color: #ffffff;
+      background: #c53636;
+    }
+
     .status {
       margin-bottom: 12px;
       font-size: 0.86rem;
@@ -275,7 +287,7 @@
         <a href="/dashboard/" class="{% if active_page == 'dashboard' %}active{% endif %}">Dashboard</a>
         <a href="/upload/" class="{% if active_page == 'upload' %}active{% endif %}">Upload</a>
         <a href="/analysis/" class="{% if active_page == 'analysis' %}active{% endif %}">Analysis</a>
-        <button type="button" id="logoutBtn">Logout</button>
+        <button type="button" id="logoutBtn" class="logout-btn">Logout</button>
       </nav>
     </header>
     <div class="status">Logged in as: <b id="sessionUser">Checking...</b></div>

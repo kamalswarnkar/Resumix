@@ -27,13 +27,3 @@
   </aside>
 </section>
 {% endblock %}
-{% block page_js %}
-<script>
-  (function () {
-    const token = localStorage.getItem("resumix_access");
-    if (token) {
-      window.location.replace("/dashboard/");
-    }
-  })();
-</script>
-{% endblock %}
