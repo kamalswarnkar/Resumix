@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+.env
+.venv/
+newenv/
+newenv311/
+# Django
+media/
+staticfiles/
+
+# ML artifacts
+ml/artifacts/*.pkl
+
+# Frontend
+frontend/node_modules/
+frontend/dist/

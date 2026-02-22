@@ -1,0 +1,151 @@
+text,role
+"django rest api postgres jwt redis celery python microservices",Backend Engineer
+"flask python rest api orm postgres caching async jobs",Backend Engineer
+"backend development django authentication authorization database design",Backend Engineer
+"python django celery background tasks redis queues",Backend Engineer
+"building scalable backend microservices python docker api",Backend Engineer
+"secure api endpoints role based access backend testing",Backend Engineer
+"django orm database optimization indexing performance",Backend Engineer
+"backend system design high load python api architecture",Backend Engineer
+"creating rest services with flask and database integration",Backend Engineer
+"python backend async processing celery redis message queues",Backend Engineer
+"building robust server side logic api security authentication",Backend Engineer
+"implementing backend caching strategies redis memcached",Backend Engineer
+"django middleware request handling backend optimization",Backend Engineer
+"api versioning backend service orchestration python",Backend Engineer
+"backend logging monitoring error handling python",Backend Engineer
+"database schema design normalization postgres backend",Backend Engineer
+"microservice architecture backend containerized python apps",Backend Engineer
+"secure backend development oauth jwt token systems",Backend Engineer
+"backend rate limiting throttling api protection",Backend Engineer
+"python backend integration third party services api",Backend Engineer
+"backend load balancing scaling distributed systems",Backend Engineer
+"writing backend unit tests integration tests python",Backend Engineer
+"implementing pagination filtering sorting api backend",Backend Engineer
+"handling concurrency threading async backend python",Backend Engineer
+"backend data validation serialization django rest",Backend Engineer
+"optimizing backend query performance indexing joins",Backend Engineer
+"backend caching layers redis cdn integration",Backend Engineer
+"designing fault tolerant backend services retry mechanisms",Backend Engineer
+"handling file uploads backend storage services",Backend Engineer
+"backend monitoring metrics logging alerts",Backend Engineer
+"django model relations migrations backend data integrity",Backend Engineer
+"backend event driven architecture message brokers",Backend Engineer
+"scalable backend session management authentication",Backend Engineer
+"backend api documentation swagger openapi",Backend Engineer
+"python backend cron scheduling background jobs",Backend Engineer
+"database transaction management backend consistency",Backend Engineer
+"backend performance profiling optimization python",Backend Engineer
+"handling api errors exceptions backend python",Backend Engineer
+"secure backend password hashing encryption",Backend Engineer
+"backend caching headers http optimization",Backend Engineer
+"building frontend ui react tailwind css javascript",Frontend Engineer
+"responsive design html css flexbox grid layouts",Frontend Engineer
+"react hooks state management frontend development",Frontend Engineer
+"axios api integration frontend async requests",Frontend Engineer
+"creating reusable react components ui architecture",Frontend Engineer
+"frontend routing react router navigation",Frontend Engineer
+"frontend performance optimization lazy loading",Frontend Engineer
+"handling forms validation frontend javascript",Frontend Engineer
+"modern ui animations transitions css",Frontend Engineer
+"state management redux context api react",Frontend Engineer
+"frontend debugging chrome dev tools javascript",Frontend Engineer
+"responsive web accessibility aria frontend",Frontend Engineer
+"frontend testing jest react testing library",Frontend Engineer
+"ui design systems components libraries",Frontend Engineer
+"frontend authentication flows tokens sessions",Frontend Engineer
+"handling dynamic rendering frontend react",Frontend Engineer
+"optimizing bundle size frontend webpack",Frontend Engineer
+"frontend cross browser compatibility fixes",Frontend Engineer
+"building charts dashboards frontend visualization",Frontend Engineer
+"frontend code splitting performance improvements",Frontend Engineer
+"handling async ui loading states frontend",Frontend Engineer
+"frontend mobile first responsive design",Frontend Engineer
+"managing events dom manipulation javascript",Frontend Engineer
+"frontend theming dark mode styling",Frontend Engineer
+"frontend api error handling ui feedback",Frontend Engineer
+"implementing drag drop ui interactions",Frontend Engineer
+"frontend animation libraries integration",Frontend Engineer
+"react forms controlled uncontrolled components",Frontend Engineer
+"frontend accessibility semantic html best practices",Frontend Engineer
+"frontend state synchronization realtime updates",Frontend Engineer
+"machine learning model training sklearn pandas",ML Engineer
+"feature engineering preprocessing data cleaning",ML Engineer
+"model evaluation accuracy precision recall metrics",ML Engineer
+"hyperparameter tuning cross validation ml",ML Engineer
+"deploying ml models flask fastapi",ML Engineer
+"building classification regression models python",ML Engineer
+"handling imbalanced datasets sampling techniques",ML Engineer
+"ml pipelines preprocessing feature selection",ML Engineer
+"training ensemble models random forest boosting",ML Engineer
+"ml model monitoring drift detection",ML Engineer
+"model explainability shap lime interpretation",ML Engineer
+"training neural networks deep learning basics",ML Engineer
+"data normalization scaling transformations",ML Engineer
+"ml model persistence joblib pickle",ML Engineer
+"building recommendation systems collaborative filtering",ML Engineer
+"supervised unsupervised learning techniques",ML Engineer
+"model deployment docker cloud serving",ML Engineer
+"feature importance analysis ml interpretability",ML Engineer
+"automating ml workflows pipelines",ML Engineer
+"evaluating classification confusion matrix metrics",ML Engineer
+"nlp text preprocessing tokenization stemming",NLP Engineer
+"named entity recognition spacy nlp",NLP Engineer
+"text classification tfidf vectorization",NLP Engineer
+"chatbot development intent recognition",NLP Engineer
+"language modeling ngrams probability",NLP Engineer
+"resume parsing skill extraction algorithms",NLP Engineer
+"sentiment analysis text polarity detection",NLP Engineer
+"nlp preprocessing stopwords lemmatization",NLP Engineer
+"document similarity cosine similarity",NLP Engineer
+"topic modeling lda nlp techniques",NLP Engineer
+"building search engines text ranking",NLP Engineer
+"transformer models bert embeddings",NLP Engineer
+"text summarization extractive abstractive",NLP Engineer
+"nlp pipelines preprocessing tokenization",NLP Engineer
+"speech to text language processing",NLP Engineer
+"building recommendation engines text similarity",NLP Engineer
+"information retrieval inverted index",NLP Engineer
+"nlp evaluation bleu rouge metrics",NLP Engineer
+"entity linking relation extraction",NLP Engineer
+"text clustering document grouping",NLP Engineer
+"etl pipelines data ingestion transformation",Data Engineer
+"data warehouse modeling star schema",Data Engineer
+"sql analytics complex joins queries",Data Engineer
+"big data processing spark hadoop",Data Engineer
+"data validation quality monitoring pipelines",Data Engineer
+"building streaming pipelines kafka",Data Engineer
+"data partitioning indexing performance tuning",Data Engineer
+"designing scalable storage data lakes",Data Engineer
+"batch processing data orchestration workflows",Data Engineer
+"metadata management data catalog",Data Engineer
+"handling schema evolution data pipelines",Data Engineer
+"data migration transformation processes",Data Engineer
+"cloud data platforms bigquery redshift",Data Engineer
+"etl scheduling workflow automation",Data Engineer
+"data lineage tracking auditing pipelines",Data Engineer
+"designing fault tolerant data pipelines",Data Engineer
+"data compression storage optimization",Data Engineer
+"data integration multiple sources ingestion",Data Engineer
+"handling real time streaming data processing",Data Engineer
+"data pipeline monitoring alerting systems",Data Engineer
+"docker containerization microservices deployment",DevOps Engineer
+"kubernetes orchestration scaling clusters",DevOps Engineer
+"ci cd pipelines automation testing deployment",DevOps Engineer
+"cloud infrastructure aws provisioning",DevOps Engineer
+"terraform infrastructure as code automation",DevOps Engineer
+"monitoring logging observability systems",DevOps Engineer
+"load balancing auto scaling cloud systems",DevOps Engineer
+"configuration management ansible automation",DevOps Engineer
+"security hardening cloud infrastructure",DevOps Engineer
+"deploying microservices kubernetes clusters",DevOps Engineer
+"automating build pipelines devops workflows",DevOps Engineer
+"container networking storage orchestration",DevOps Engineer
+"high availability disaster recovery planning",DevOps Engineer
+"continuous monitoring alerting systems",DevOps Engineer
+"managing secrets vault security devops",DevOps Engineer
+"cloud cost optimization resource management",DevOps Engineer
+"implementing blue green deployments",DevOps Engineer
+"rolling updates zero downtime deployments",DevOps Engineer
+"cloud networking vpc routing devops",DevOps Engineer
+"incident response troubleshooting production",DevOps Engineer
