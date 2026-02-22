@@ -33,6 +33,14 @@ Production-oriented Django + DRF application for resume-to-job matching and role
 10. Open app UI:
    - `http://127.0.0.1:8000/`
 
+## AI Suggestions Setup (Required)
+AI suggestions are now strict AI-only (no rule-based fallback). Configure these keys in `.env`:
+- `OPENAI_API_KEY=your_api_key`
+- `OPENAI_MODEL=gpt-4o-mini`
+- `OPENAI_API_BASE=https://api.openai.com/v1`
+
+If AI configuration or API access fails, `/api/resume/analyze/` returns `503` with an error message.
+
 ## 2. Train ML Model
 1. Ensure backend dependencies are installed.
 2. Run:

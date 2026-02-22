@@ -106,13 +106,6 @@
       background: #c53636;
     }
 
-    .status {
-      margin-bottom: 12px;
-      font-size: 0.86rem;
-      color: #36505a;
-      font-weight: 600;
-    }
-
     .card {
       background: var(--card);
       border: 1px solid rgba(255, 255, 255, 0.9);
@@ -198,12 +191,21 @@
     .btn:hover { transform: translateY(-1px); }
 
     .btn-accent { background: linear-gradient(145deg, #d65b1f, #b64716); }
+    .btn-inline {
+      display: inline-block;
+      text-decoration: none;
+      font-size: 0.78rem;
+      padding: 6px 10px;
+      border-radius: 999px;
+      margin-top: 8px;
+    }
 
     .msg {
       margin-top: 8px;
       min-height: 1.2em;
       font-size: 0.87rem;
       font-weight: 600;
+      display: none;
     }
 
     .ok { color: var(--good); }
@@ -262,6 +264,11 @@
 
     .muted { color: var(--muted); font-size: 0.87rem; }
 
+    .nav a.locked {
+      opacity: 0.62;
+      border-style: dashed;
+    }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(7px); }
       to { opacity: 1; transform: translateY(0); }
@@ -286,31 +293,19 @@
       <nav class="nav">
         <a href="/dashboard/" class="{% if active_page == 'dashboard' %}active{% endif %}">Dashboard</a>
         <a href="/upload/" class="{% if active_page == 'upload' %}active{% endif %}">Upload</a>
-        <a href="/analysis/" class="{% if active_page == 'analysis' %}active{% endif %}">Analysis</a>
+        <a href="/analysis/" id="analysisNav" class="{% if active_page == 'analysis' %}active{% endif %}">Analysis</a>
         <button type="button" id="logoutBtn" class="logout-btn">Logout</button>
       </nav>
     </header>
-    <div class="status">Logged in as: <b id="sessionUser">Checking...</b></div>
     {% block content %}{% endblock %}
   </main>
   <script>
     (function () {
       const access = localStorage.getItem("resumix_access");
-      const userText = localStorage.getItem("resumix_user");
       if (!access) {
         window.location.replace("/login/");
         return;
       }
-
-      let user = null;
-      try {
-        user = userText ? JSON.parse(userText) : null;
-      } catch (_) {
-        user = null;
-      }
-
-      const sessionEl = document.getElementById("sessionUser");
-      sessionEl.textContent = user && user.email ? user.email : "Authenticated user";
 
       function getError(data) {
         if (!data) return "Unknown error";
@@ -338,16 +333,28 @@
       window.ResumixApp = {
         api,
         setMessage(el, msg, ok) {
-          el.textContent = msg || "";
-          el.className = "msg " + (ok ? "ok" : "err");
+          if (!el) return;
+          el.textContent = "";
+          el.className = "msg";
         },
       };
+
+      const analysisNav = document.getElementById("analysisNav");
+      const uploadReady = localStorage.getItem("resumix_uploaded_ready") === "1";
+      if (analysisNav && !uploadReady) {
+        analysisNav.classList.add("locked");
+        analysisNav.addEventListener("click", function (event) {
+          event.preventDefault();
+          window.location.replace("/upload/");
+        });
+      }
 
       document.getElementById("logoutBtn").addEventListener("click", function () {
         localStorage.removeItem("resumix_access");
         localStorage.removeItem("resumix_refresh");
         localStorage.removeItem("resumix_user");
         localStorage.removeItem("resumix_resume_id");
+        localStorage.removeItem("resumix_uploaded_ready");
         window.location.replace("/login/");
       });
     })();

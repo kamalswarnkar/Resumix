@@ -19,7 +19,6 @@
           <textarea id="jobDescription" required></textarea>
         </div>
         <button class="btn btn-accent" type="submit">Run Analysis</button>
-        <div class="msg" id="analysisMsg"></div>
       </form>
     </div>
 
@@ -55,16 +54,26 @@
 <script>
   (function () {
     const resumeInput = document.getElementById("resumeId");
-    const msgEl = document.getElementById("analysisMsg");
-
+    const query = new URLSearchParams(window.location.search);
+    const selectedAnalysisId = Number(query.get("analysis_id") || "0");
+    const selectedResumeId = query.get("resume_id");
     const stored = localStorage.getItem("resumix_resume_id");
-    if (stored) {
+    const uploadReady = localStorage.getItem("resumix_uploaded_ready") === "1";
+
+    if (!uploadReady && !selectedAnalysisId) {
+      window.location.replace("/upload/");
+      return;
+    }
+
+    if (selectedResumeId) {
+      resumeInput.value = selectedResumeId;
+    } else if (stored) {
       resumeInput.value = stored;
     }
 
     function renderChips(id, values) {
       const el = document.getElementById(id);
-      if (!values || !values.length) {
+      if (!Array.isArray(values) || !values.length) {
         el.innerHTML = "<span class='muted'>None</span>";
         return;
       }
@@ -82,7 +91,27 @@
       document.getElementById("metricAts").textContent = data.ats_compliance + "%";
       renderChips("skillsFound", data.skills_found || []);
       renderChips("skillsMissing", data.skills_missing || []);
-      renderChips("suggestions", data.suggestions || []);
+      renderChips("suggestions", data.suggestions_list || []);
+      if (data.job_description) {
+        document.getElementById("jobDescription").value = data.job_description;
+      }
+    }
+
+    async function loadSelectedPreviousAnalysis() {
+      if (!selectedAnalysisId) return;
+      try {
+        const items = await window.ResumixApp.api("/api/resume/history/");
+        const selected = Array.isArray(items)
+          ? items.find(function (item) { return Number(item.id) === selectedAnalysisId; })
+          : null;
+
+        if (selected) {
+          setMetrics(selected);
+          resumeInput.value = selected.resume;
+          localStorage.setItem("resumix_resume_id", String(selected.resume));
+        }
+      } catch (error) {
+      }
     }
 
     document.getElementById("analysisForm").addEventListener("submit", async function (event) {
@@ -98,13 +127,13 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
-        localStorage.setItem("resumix_resume_id", String(payload.resume_id));
         setMetrics(data);
-        window.ResumixApp.setMessage(msgEl, "Analysis completed.", true);
+        localStorage.setItem("resumix_analysis_completed", "1");
       } catch (error) {
-        window.ResumixApp.setMessage(msgEl, error.message, false);
       }
     });
+
+    loadSelectedPreviousAnalysis();
   })();
 </script>
 {% endblock %}

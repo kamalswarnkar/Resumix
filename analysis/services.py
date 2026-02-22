@@ -1,12 +1,12 @@
 from resumes.models import Resume
 from .models import Analysis
+from .ai_suggestions import generate_suggestions_with_ai
 from ml.services import predict_role
 from utils.nlp import (
     extract_skills,
     keyword_similarity_score,
     experience_relevance_score,
     ats_compliance_score,
-    generate_suggestions,
 )
 
 
@@ -37,10 +37,18 @@ def run_analysis(resume: Resume, job_description: str) -> Analysis:
     )
 
     predicted_role = predict_role(resume_text)
-    suggestions = generate_suggestions(missing, ats_compliance, experience_relevance)
+    suggestions = generate_suggestions_with_ai(
+        resume_text=resume_text,
+        job_description=job_description,
+        missing_skills=missing,
+        ats_score=ats_compliance,
+        exp_score=experience_relevance,
+        match_score=round(final_score, 2),
+    )
 
     return Analysis.objects.create(
         resume=resume,
+        job_description=job_description,
         match_score=round(final_score, 2),
         keyword_similarity=round(keyword_similarity, 2),
         skill_match_score=round(skill_match, 2),
@@ -48,6 +56,6 @@ def run_analysis(resume: Resume, job_description: str) -> Analysis:
         ats_compliance=round(ats_compliance, 2),
         skills_found=sorted(list(set(resume_skills))),
         skills_missing=missing,
-        suggestions=suggestions,
+        suggestions="\n".join(suggestions),
         predicted_role=predicted_role,
     )

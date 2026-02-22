@@ -4,6 +4,7 @@ from rest_framework.response import Response
 
 from analysis.serializers import AnalysisSerializer
 from analysis.services import run_analysis
+from analysis.ai_suggestions import AISuggestionsError
 
 from .models import Resume
 from .parsers import extract_text_from_resume
@@ -51,7 +52,10 @@ class ResumeViewSet(viewsets.ViewSet):
         except Resume.DoesNotExist:
             return Response({"detail": "Resume not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        analysis = run_analysis(resume=resume, job_description=job_description)
+        try:
+            analysis = run_analysis(resume=resume, job_description=job_description)
+        except AISuggestionsError as exc:
+            return Response({"detail": str(exc)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
         return Response(AnalysisSerializer(analysis).data)
 
     def history(self, request):

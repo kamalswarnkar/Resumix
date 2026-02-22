@@ -3,6 +3,7 @@ from django.db import models
 
 class Analysis(models.Model):
     resume = models.ForeignKey("resumes.Resume", on_delete=models.CASCADE, related_name="analyses")
+    job_description = models.TextField(blank=True)
     match_score = models.FloatField(default=0.0, db_index=True)
     keyword_similarity = models.FloatField(default=0.0)
     skill_match_score = models.FloatField(default=0.0)

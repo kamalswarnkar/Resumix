@@ -21,7 +21,7 @@
     <div class="muted" id="resumeIdState">None selected.</div>
   </div>
 
-  <div style="margin-top: 12px;">
+  <div id="continueWrap" style="margin-top: 12px; display:none;">
     <a href="/analysis/" class="btn btn-accent" style="display:inline-block; text-decoration:none;">Continue to Analysis</a>
   </div>
 </section>
@@ -31,10 +31,13 @@
   (function () {
     const msgEl = document.getElementById("uploadMsg");
     const stateEl = document.getElementById("resumeIdState");
+    const continueWrap = document.getElementById("continueWrap");
 
     function refreshState() {
       const id = localStorage.getItem("resumix_resume_id");
+      const ready = localStorage.getItem("resumix_uploaded_ready") === "1";
       stateEl.textContent = id ? ("Resume ID " + id + " ready for analysis.") : "None selected.";
+      continueWrap.style.display = id && ready ? "block" : "none";
     }
 
     refreshState();
@@ -56,6 +59,7 @@
           body: formData,
         });
         localStorage.setItem("resumix_resume_id", String(data.id));
+        localStorage.setItem("resumix_uploaded_ready", "1");
         refreshState();
         window.ResumixApp.setMessage(msgEl, "Upload completed.", true);
       } catch (error) {

@@ -110,7 +110,7 @@ def _extract_years(text: str) -> int:
     return max(int(v) for v in matches)
 
 
-def generate_suggestions(missing_skills, ats_score: float, exp_score: float) -> str:
+def generate_suggestions(missing_skills, ats_score: float, exp_score: float) -> list[str]:
     tips = []
     if missing_skills:
         tips.append("Add or strengthen these skills: " + ", ".join(missing_skills[:10]))
@@ -120,4 +120,4 @@ def generate_suggestions(missing_skills, ats_score: float, exp_score: float) -> 
         tips.append("Highlight impact, tenure, and domain-relevant accomplishments.")
     if not tips:
         tips.append("Strong profile overall. Tailor keywords to each job posting.")
-    return " ".join(tips)
+    return tips

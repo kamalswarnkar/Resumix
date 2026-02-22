@@ -14,7 +14,6 @@
     <div class="span-12">
       <h2>Recent Results</h2>
       <div id="historyList"></div>
-      <div class="msg" id="historyMsg"></div>
     </div>
   </div>
 </section>
@@ -22,8 +21,13 @@
 {% block page_js %}
 <script>
   (function () {
+    if (localStorage.getItem("resumix_analysis_completed") === "1") {
+      localStorage.removeItem("resumix_resume_id");
+      localStorage.removeItem("resumix_uploaded_ready");
+      localStorage.removeItem("resumix_analysis_completed");
+    }
+
     const listEl = document.getElementById("historyList");
-    const msgEl = document.getElementById("historyMsg");
 
     function render(items) {
       if (!items.length) {
@@ -41,6 +45,7 @@
             "<span class='chip'>Experience " + item.experience_relevance + "%</span>" +
             "<span class='chip'>ATS " + item.ats_compliance + "%</span>" +
           "</div>" +
+          "<a class='btn btn-accent btn-inline' href='/analysis/?analysis_id=" + item.id + "&resume_id=" + item.resume + "'>Analysis</a>" +
         "</article>";
       }).join("");
     }
@@ -57,9 +62,8 @@
         document.getElementById("totalAnalyses").textContent = String(total);
         document.getElementById("avgMatch").textContent = avg + "%";
         document.getElementById("bestMatch").textContent = best + "%";
-        window.ResumixApp.setMessage(msgEl, "Dashboard data loaded.", true);
       } catch (error) {
-        window.ResumixApp.setMessage(msgEl, error.message, false);
+        listEl.innerHTML = "<div class='item'><div class='muted'>Unable to load results right now.</div></div>";
       }
     }
 
