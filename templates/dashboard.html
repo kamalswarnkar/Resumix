@@ -1,0 +1,69 @@
+{% extends "base_app.html" %}
+{% block title %}Resumix | Dashboard{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="page-hero">
+    <h1>Dashboard</h1>
+    <p>Track your recent analyses and monitor score consistency over time.</p>
+  </div>
+
+  <div class="grid">
+    <div class="span-4 metric"><div class="k">Total Analyses</div><div class="v" id="totalAnalyses">0</div></div>
+    <div class="span-4 metric"><div class="k">Average Match Score</div><div class="v" id="avgMatch">0%</div></div>
+    <div class="span-4 metric"><div class="k">Best Match Score</div><div class="v" id="bestMatch">0%</div></div>
+    <div class="span-12">
+      <h2>Recent Results</h2>
+      <div id="historyList"></div>
+      <div class="msg" id="historyMsg"></div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block page_js %}
+<script>
+  (function () {
+    const listEl = document.getElementById("historyList");
+    const msgEl = document.getElementById("historyMsg");
+
+    function render(items) {
+      if (!items.length) {
+        listEl.innerHTML = "<div class='item'><div class='muted'>No analyses yet. Upload a resume and run analysis.</div></div>";
+        return;
+      }
+
+      listEl.innerHTML = items.slice(0, 10).map(function (item) {
+        return "<article class='item'>" +
+          "<div class='head'>Resume #" + item.resume + " | " + item.match_score + "% | " + (item.predicted_role || "N/A") + "</div>" +
+          "<div class='muted'>" + new Date(item.created_at).toLocaleString() + "</div>" +
+          "<div class='chips'>" +
+            "<span class='chip'>Keyword " + item.keyword_similarity + "%</span>" +
+            "<span class='chip'>Skill " + item.skill_match_score + "%</span>" +
+            "<span class='chip'>Experience " + item.experience_relevance + "%</span>" +
+            "<span class='chip'>ATS " + item.ats_compliance + "%</span>" +
+          "</div>" +
+        "</article>";
+      }).join("");
+    }
+
+    async function loadHistory() {
+      try {
+        const items = await window.ResumixApp.api("/api/resume/history/");
+        render(items);
+
+        const total = items.length;
+        const avg = total ? (items.reduce(function (a, b) { return a + Number(b.match_score || 0); }, 0) / total).toFixed(2) : "0.00";
+        const best = total ? Math.max.apply(null, items.map(function (x) { return Number(x.match_score || 0); })).toFixed(2) : "0.00";
+
+        document.getElementById("totalAnalyses").textContent = String(total);
+        document.getElementById("avgMatch").textContent = avg + "%";
+        document.getElementById("bestMatch").textContent = best + "%";
+        window.ResumixApp.setMessage(msgEl, "Dashboard data loaded.", true);
+      } catch (error) {
+        window.ResumixApp.setMessage(msgEl, error.message, false);
+      }
+    }
+
+    loadHistory();
+  })();
+</script>
+{% endblock %}

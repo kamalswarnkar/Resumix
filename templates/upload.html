@@ -1,0 +1,67 @@
+{% extends "base_app.html" %}
+{% block title %}Resumix | Upload{% endblock %}
+{% block content %}
+<section class="card" style="max-width: 840px;">
+  <div class="page-hero">
+    <h1>Upload Resume</h1>
+    <p>Upload a PDF or DOC/DOCX file. The extracted resume ID will be used in analysis.</p>
+  </div>
+
+  <form id="uploadForm">
+    <div class="field">
+      <label for="resumeFile">Resume file (.pdf, .doc, .docx)</label>
+      <input id="resumeFile" type="file" accept=".pdf,.doc,.docx" required />
+    </div>
+    <button class="btn" type="submit">Upload Resume</button>
+    <div class="msg" id="uploadMsg"></div>
+  </form>
+
+  <div class="item" style="margin-top: 12px;">
+    <div class="head">Current Resume ID</div>
+    <div class="muted" id="resumeIdState">None selected.</div>
+  </div>
+
+  <div style="margin-top: 12px;">
+    <a href="/analysis/" class="btn btn-accent" style="display:inline-block; text-decoration:none;">Continue to Analysis</a>
+  </div>
+</section>
+{% endblock %}
+{% block page_js %}
+<script>
+  (function () {
+    const msgEl = document.getElementById("uploadMsg");
+    const stateEl = document.getElementById("resumeIdState");
+
+    function refreshState() {
+      const id = localStorage.getItem("resumix_resume_id");
+      stateEl.textContent = id ? ("Resume ID " + id + " ready for analysis.") : "None selected.";
+    }
+
+    refreshState();
+
+    document.getElementById("uploadForm").addEventListener("submit", async function (event) {
+      event.preventDefault();
+      const fileInput = document.getElementById("resumeFile");
+      if (!fileInput.files[0]) {
+        window.ResumixApp.setMessage(msgEl, "Please select a file.", false);
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", fileInput.files[0]);
+
+      try {
+        const data = await window.ResumixApp.api("/api/resume/upload/", {
+          method: "POST",
+          body: formData,
+        });
+        localStorage.setItem("resumix_resume_id", String(data.id));
+        refreshState();
+        window.ResumixApp.setMessage(msgEl, "Upload completed.", true);
+      } catch (error) {
+        window.ResumixApp.setMessage(msgEl, error.message, false);
+      }
+    });
+  })();
+</script>
+{% endblock %}

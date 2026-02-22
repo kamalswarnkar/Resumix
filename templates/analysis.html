@@ -1,0 +1,110 @@
+{% extends "base_app.html" %}
+{% block title %}Resumix | Analysis{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="page-hero">
+    <h1>Resume Analysis</h1>
+    <p>Paste the target job description and run a weighted match analysis for the selected resume.</p>
+  </div>
+
+  <div class="grid">
+    <div class="span-6">
+      <form id="analysisForm">
+        <div class="field">
+          <label for="resumeId">Resume ID</label>
+          <input id="resumeId" type="number" min="1" required />
+        </div>
+        <div class="field">
+          <label for="jobDescription">Job Description (minimum 30 characters)</label>
+          <textarea id="jobDescription" required></textarea>
+        </div>
+        <button class="btn btn-accent" type="submit">Run Analysis</button>
+        <div class="msg" id="analysisMsg"></div>
+      </form>
+    </div>
+
+    <div class="span-6">
+      <div class="grid">
+        <div class="span-6 metric"><div class="k">Match Score</div><div class="v" id="metricMatch">-</div></div>
+        <div class="span-6 metric"><div class="k">Predicted Role</div><div class="v" id="metricRole">-</div></div>
+        <div class="span-6 metric"><div class="k">Keyword Similarity</div><div class="v" id="metricKeyword">-</div></div>
+        <div class="span-6 metric"><div class="k">Skill Match</div><div class="v" id="metricSkill">-</div></div>
+        <div class="span-6 metric"><div class="k">Experience Relevance</div><div class="v" id="metricExp">-</div></div>
+        <div class="span-6 metric"><div class="k">ATS Compliance</div><div class="v" id="metricAts">-</div></div>
+      </div>
+    </div>
+
+    <div class="span-12 item">
+      <div class="head">Skills Found</div>
+      <div id="skillsFound" class="chips"></div>
+    </div>
+
+    <div class="span-12 item">
+      <div class="head">Skills Missing</div>
+      <div id="skillsMissing" class="chips"></div>
+    </div>
+
+    <div class="span-12 item">
+      <div class="head">Suggestions</div>
+      <div id="suggestions" class="chips"></div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block page_js %}
+<script>
+  (function () {
+    const resumeInput = document.getElementById("resumeId");
+    const msgEl = document.getElementById("analysisMsg");
+
+    const stored = localStorage.getItem("resumix_resume_id");
+    if (stored) {
+      resumeInput.value = stored;
+    }
+
+    function renderChips(id, values) {
+      const el = document.getElementById(id);
+      if (!values || !values.length) {
+        el.innerHTML = "<span class='muted'>None</span>";
+        return;
+      }
+      el.innerHTML = values.map(function (v) {
+        return "<span class='chip'>" + v + "</span>";
+      }).join("");
+    }
+
+    function setMetrics(data) {
+      document.getElementById("metricMatch").textContent = data.match_score + "%";
+      document.getElementById("metricRole").textContent = data.predicted_role || "N/A";
+      document.getElementById("metricKeyword").textContent = data.keyword_similarity + "%";
+      document.getElementById("metricSkill").textContent = data.skill_match_score + "%";
+      document.getElementById("metricExp").textContent = data.experience_relevance + "%";
+      document.getElementById("metricAts").textContent = data.ats_compliance + "%";
+      renderChips("skillsFound", data.skills_found || []);
+      renderChips("skillsMissing", data.skills_missing || []);
+      renderChips("suggestions", data.suggestions || []);
+    }
+
+    document.getElementById("analysisForm").addEventListener("submit", async function (event) {
+      event.preventDefault();
+      const payload = {
+        resume_id: Number(resumeInput.value),
+        job_description: document.getElementById("jobDescription").value,
+      };
+
+      try {
+        const data = await window.ResumixApp.api("/api/resume/analyze/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        localStorage.setItem("resumix_resume_id", String(payload.resume_id));
+        setMetrics(data);
+        window.ResumixApp.setMessage(msgEl, "Analysis completed.", true);
+      } catch (error) {
+        window.ResumixApp.setMessage(msgEl, error.message, false);
+      }
+    });
+  })();
+</script>
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends "base_public.html" %}
+{% block title %}Resumix | Register{% endblock %}
+{% block content %}
+<section class="card auth-wrap">
+  <aside class="auth-side">
+    <h3>Why Register?</h3>
+    <ul>
+      <li>Secure personal analysis history.</li>
+      <li>Upload and evaluate multiple resumes.</li>
+      <li>Track fit trends for different job descriptions.</li>
+      <li>Get actionable missing-skill insights.</li>
+    </ul>
+  </aside>
+
+  <article>
+    <h2>Create Account</h2>
+    <p>Complete registration and continue to secure login.</p>
+    <form id="registerForm">
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" required />
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="firstName">First Name</label>
+          <input id="firstName" type="text" />
+        </div>
+        <div class="field">
+          <label for="lastName">Last Name</label>
+          <input id="lastName" type="text" />
+        </div>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" minlength="8" required />
+      </div>
+      <button class="btn" type="submit">Register</button>
+      <div class="msg" id="registerMsg"></div>
+    </form>
+    <div class="inline-links">
+      <a class="link" href="/login/">Already registered? Login</a>
+    </div>
+  </article>
+</section>
+{% endblock %}
+{% block page_js %}
+<script>
+  (function () {
+    const token = localStorage.getItem("resumix_access");
+    if (token) {
+      window.location.replace("/dashboard/");
+      return;
+    }
+
+    const msgEl = document.getElementById("registerMsg");
+
+    function setMessage(text, ok) {
+      msgEl.textContent = text || "";
+      msgEl.className = "msg " + (ok ? "ok" : "err");
+    }
+
+    function getError(data) {
+      if (!data) return "Unknown error";
+      if (typeof data.detail === "string") return data.detail;
+      if (Array.isArray(data.non_field_errors) && data.non_field_errors[0]) return data.non_field_errors[0];
+      return JSON.stringify(data);
+    }
+
+    document.getElementById("registerForm").addEventListener("submit", async function (event) {
+      event.preventDefault();
+      const payload = {
+        email: document.getElementById("email").value,
+        first_name: document.getElementById("firstName").value,
+        last_name: document.getElementById("lastName").value,
+        password: document.getElementById("password").value,
+      };
+
+      try {
+        const res = await fetch("/api/auth/register/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(getError(data));
+        }
+
+        setMessage("Registration successful. Redirecting to login...", true);
+        setTimeout(function () {
+          window.location.href = "/login/?registered=1";
+        }, 900);
+      } catch (error) {
+        setMessage(error.message, false);
+      }
+    });
+  })();
+</script>
+{% endblock %}

@@ -4,10 +4,22 @@ from django.contrib import admin
 from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
-from .views import FrontendTemplateView
+from .views import (
+    AnalysisTemplateView,
+    DashboardTemplateView,
+    LandingTemplateView,
+    LoginTemplateView,
+    RegisterTemplateView,
+    UploadTemplateView,
+)
 
 urlpatterns = [
-    path("", FrontendTemplateView.as_view(), name="frontend-template"),
+    path("", LandingTemplateView.as_view(), name="landing"),
+    path("register/", RegisterTemplateView.as_view(), name="register-page"),
+    path("login/", LoginTemplateView.as_view(), name="login-page"),
+    path("dashboard/", DashboardTemplateView.as_view(), name="dashboard-page"),
+    path("upload/", UploadTemplateView.as_view(), name="upload-page"),
+    path("analysis/", AnalysisTemplateView.as_view(), name="analysis-page"),
     path("admin/", admin.site.urls),
     path("api/auth/", include("users.urls")),
     path("api/resume/", include("resumes.urls")),
