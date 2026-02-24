@@ -1,0 +1,7 @@
+train_accuracy,test_accuracy,balanced_accuracy,precision_macro,recall_macro,f1_macro,precision_weighted,recall_weighted,f1_weighted,mcc,roc_auc_ovr_macro,model,reason_for_inclusion,preference_rank
+1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,logreg,Strong linear baseline for sparse text; stable and interpretable coefficients with probabilistic outputs.,1
+1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,svm,"Effective margin-based classifier for text data, especially in high-dimensional TF-IDF spaces.",2
+1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,random_forest,Bagged tree ensemble baseline with robustness against overfitting compared to single trees.,4
+1.0,0.9921875,0.992153846153846,0.9927248677248677,0.992153846153846,0.992293425088732,0.9924716848544973,0.9921875,0.9921817065162257,0.9913521235541066,1.0,xgboost,Powerful boosted-tree ensemble to capture non-linear patterns and feature interactions.,3
+1.0,0.98828125,0.9886039886039886,0.9886039886039886,0.9886039886039886,0.9883832778394377,0.9887264066951567,0.98828125,0.98828125,0.9870290616840177,0.999965367965368,knn,Instance-based non-parametric baseline to compare local-neighborhood behavior.,5
+1.0,0.9765625,0.9766153846153847,0.9794044665012407,0.9766153846153847,0.9770936443542932,0.9788791098014888,0.9765625,0.9767822826867817,0.9741859341366721,0.9870014294293771,decision_tree,Simple non-linear baseline with high interpretability.,6

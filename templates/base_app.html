@@ -334,8 +334,9 @@
         api,
         setMessage(el, msg, ok) {
           if (!el) return;
-          el.textContent = "";
-          el.className = "msg";
+          el.textContent = msg || "";
+          el.className = `msg ${ok ? "ok" : "err"}`;
+          el.style.display = msg ? "block" : "none";
         },
       };
 
