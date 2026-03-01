@@ -21,9 +21,22 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True)
 
     def validate(self, attrs):
-        email = attrs.get("email")
+        email = (attrs.get("email") or "").strip()
         password = attrs.get("password")
-        user = authenticate(username=email, password=password)
+        request = self.context.get("request")
+
+        if not email or not password:
+            raise serializers.ValidationError("Email and password are required")
+
+        normalized_email = User.objects.normalize_email(email)
+        user = authenticate(request=request, username=normalized_email, password=password)
+        if not user:
+            user = authenticate(request=request, email=normalized_email, password=password)
+        if not user:
+            candidate = User.objects.filter(email__iexact=normalized_email).first()
+            if candidate and candidate.check_password(password) and candidate.is_active:
+                user = candidate
+
         if not user:
             raise serializers.ValidationError("Invalid credentials")
         if not user.is_active:

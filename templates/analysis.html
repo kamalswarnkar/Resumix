@@ -97,6 +97,33 @@
       }
     }
 
+    async function refreshAnalysisById(analysisId) {
+      const items = await window.ResumixApp.api("/api/resume/history/");
+      const selected = Array.isArray(items)
+        ? items.find(function (item) { return Number(item.id) === Number(analysisId); })
+        : null;
+      return selected || null;
+    }
+
+    function hasAiSuggestions(list) {
+      return Array.isArray(list) && list.some(function (line) { return String(line).startsWith("AI:"); });
+    }
+
+    function pollForAi(analysisId, attempts) {
+      if (!analysisId || attempts <= 0) return;
+      setTimeout(async function () {
+        try {
+          const updated = await refreshAnalysisById(analysisId);
+          if (updated && hasAiSuggestions(updated.suggestions_list)) {
+            setMetrics(updated);
+            return;
+          }
+        } catch (_) {
+        }
+        pollForAi(analysisId, attempts - 1);
+      }, 3000);
+    }
+
     async function loadSelectedPreviousAnalysis() {
       if (!selectedAnalysisId) return;
       try {
@@ -129,6 +156,9 @@
         });
         setMetrics(data);
         localStorage.setItem("resumix_analysis_completed", "1");
+        if (!hasAiSuggestions(data.suggestions_list)) {
+          pollForAi(data.id, 4);
+        }
       } catch (error) {
         window.alert(error && error.message ? error.message : "Analysis failed. Please check AI configuration and try again.");
       }

@@ -182,6 +182,58 @@
       gap: 10px;
     }
 
+    .password-wrap {
+      position: relative;
+    }
+
+    .password-wrap input {
+      padding-right: 46px;
+    }
+
+    .toggle-btn {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      border: 1px solid rgba(16, 32, 39, 0.2);
+      background: #1f2f36;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .toggle-btn svg {
+      width: 18px;
+      height: 18px;
+      stroke: #ffffff;
+      stroke-width: 2;
+      fill: none;
+    }
+
+    .toggle-btn.active {
+      background: #ffffff;
+      border-color: rgba(11, 139, 114, 0.4);
+    }
+
+    .toggle-btn.active svg {
+      stroke: var(--brand);
+    }
+
+    .strength {
+      margin-top: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      min-height: 1.1em;
+    }
+
+    .strength.weak { color: #8c1f1f; }
+    .strength.moderate { color: #b86b12; }
+    .strength.strong { color: var(--good); }
+
     .cta-row {
       display: flex;
       gap: 10px;

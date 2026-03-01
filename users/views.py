@@ -27,7 +27,7 @@ class AuthViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=["post"], url_path="login")
     def login(self, request):
-        serializer = LoginSerializer(data=request.data)
+        serializer = LoginSerializer(data=request.data, context={"request": request})
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
         refresh = RefreshToken.for_user(user)
