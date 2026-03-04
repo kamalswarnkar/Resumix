@@ -12,6 +12,9 @@ staticfiles/
 
 # ML artifacts
 ml/artifacts/*.pkl
+!ml/artifacts/role_classifier.pkl
+!ml/artifacts/tfidf_vectorizer.pkl
+!ml/artifacts/label_encoder.pkl
 
 # Frontend
 frontend/node_modules/
