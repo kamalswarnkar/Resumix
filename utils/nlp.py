@@ -3,10 +3,14 @@ import re
 from pathlib import Path
 
 import nltk
-import spacy
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+
+try:
+    import spacy
+except Exception:
+    spacy = None
 
 
 for resource in ("stopwords", "punkt"):
@@ -17,10 +21,15 @@ for resource in ("stopwords", "punkt"):
 
 STOPWORDS = set(stopwords.words("english"))
 
-try:
-    NLP = spacy.load("en_core_web_sm")
-except OSError:
-    NLP = spacy.blank("en")
+NLP = None
+if spacy is not None:
+    try:
+        NLP = spacy.load("en_core_web_sm")
+    except Exception:
+        try:
+            NLP = spacy.blank("en")
+        except Exception:
+            NLP = None
 
 SKILLS_FILE = Path(__file__).resolve().parent / "skills.json"
 
@@ -42,6 +51,9 @@ def clean_text(text: str) -> str:
 
 def preprocess_text(text: str) -> str:
     cleaned = clean_text(text)
+    if NLP is None:
+        return " ".join(token for token in cleaned.split() if token and token not in STOPWORDS)
+
     doc = NLP(cleaned)
     tokens = []
     for token in doc:
@@ -68,11 +80,12 @@ def extract_skills(text: str):
     cleaned = clean_text(text)
     found = {skill for skill in KNOWN_SKILLS if skill in cleaned}
 
-    doc = NLP(cleaned)
-    for ent in doc.ents:
-        candidate = ent.text.strip().lower()
-        if candidate in KNOWN_SKILLS:
-            found.add(candidate)
+    if NLP is not None:
+        doc = NLP(cleaned)
+        for ent in doc.ents:
+            candidate = ent.text.strip().lower()
+            if candidate in KNOWN_SKILLS:
+                found.add(candidate)
 
     return sorted(found)
 
