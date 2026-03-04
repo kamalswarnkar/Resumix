@@ -2,6 +2,9 @@
 
 Production-oriented Django + DRF application for resume-to-job matching and role prediction, now delivered through a Django template UI (no separate React frontend required).
 
+## Live Site
+- https://resumix-ygb9.onrender.com/
+
 ## Stack
 - Python 3.11+
 - Django 5 + DRF
